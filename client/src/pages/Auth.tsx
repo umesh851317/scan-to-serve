@@ -2,10 +2,12 @@ import { useState } from "react";
 import logo from "../assets/logo.png";
 import Register from "../components/auth/Register";
 import Login from "../components/auth/Login";
+import { usePopup } from "../context/Popup";
+import PopUpMsg from "../components/popUpMsg/PopUpMsg";
 
 export default function Auth() {
+       const {showPopUp} = usePopup();
        const [isRegister, setIsRegister] = useState(false);
-       const [isAuth, setIsAuth] = useState(false);
 
        return (
               <div className="min-h-screen bg-[#121212] flex items-center justify-center px-4">
@@ -45,7 +47,7 @@ export default function Auth() {
                                           setIsRegister={setIsRegister}
                                    />
                             ) : (
-                                   <Login setIsAuth={setIsAuth} />
+                                   <Login />
                             )}
 
                             {/* Toggle */}
@@ -64,6 +66,7 @@ export default function Auth() {
                                    </p>
                             </div>
                      </div>
+                     {showPopUp && <PopUpMsg />}
               </div>
        );
 }

@@ -11,7 +11,7 @@ function App() {
     return <h1>Loading...</h1>;
   }
   return (
-    <main className="h-screen w-screen bg-gray-100 overflow-y-auto hide-scrollbar">
+    <>
       <Routes>
         <Route path="/" element={<Home />} />
 
@@ -19,7 +19,7 @@ function App() {
           path="/auth"
           element={
             isAuthenticated ? (
-              <Navigate to="/admin" replace />  // here replace used for remove /auth with /admin
+              <Navigate to="/admin" replace />
             ) : (
               <Auth />
             )
@@ -38,7 +38,7 @@ function App() {
         {/* Customer routes */}
         {/* <Route path="/customer/*" element={<Customer />} /> */}
       </Routes>
-    </main>
+    </>
   );
 }
 

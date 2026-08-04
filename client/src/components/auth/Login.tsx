@@ -1,11 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { usePopup } from "../../context/Popup";
 
-export default function Login({ setIsAuth }) {
+export default function Login() {
        const { checkAuth } = useAuth();
-       const navigate = useNavigate()
+       const { setPopup, setShowPopUp } = usePopup();
+       // const navigate = useNavigate()
        const [formData, setFormData] = useState({
               email: "",
               password: "",
@@ -25,22 +27,32 @@ export default function Login({ setIsAuth }) {
               try {
                      setLoading(true);
                      const { data } = await axios.post(
-                            "http://localhost:8000/auth/signIn",
+                            `${import.meta.env.VITE_API}/auth/signIn`,
                             formData,
                             {
-                                   withCredentials: true,      // sends cookies automatically
+                                   withCredentials: true,      // used for recieve cookies during login api
                             }
                      );
                      console.log(data);
-                     // setIsAuth(true);
                      await checkAuth();
-                     navigate("/admin");
+                     setPopup({
+                            msg: data.message,
+                            bgColor: data.success ? ("bg-green-500") : ("bg-red-500")
+                     })
+                     setShowPopUp(true)  // check for login using cookis
               } catch (err) {
                      console.log(err);
                      alert(
                             err.response?.data?.message || "Login failed"
                      );
               } finally {
+                     setTimeout(() => {
+                            setPopup({
+                                   msg: "",
+                                   bgColor: ""
+                            })
+                            setShowPopUp(false)
+                     }, 2500)
                      setLoading(false);
               }
        };

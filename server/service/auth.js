@@ -3,7 +3,7 @@ const secret = process.env.JWT_SECRET
 function setUser(user) {
        return jwt.sign({
               _id: user._id,
-              restaurentId: user.restaurentId,
+              restaurantId: user.restaurantId,
               email: user.email,
               role: user.role
        }, secret,

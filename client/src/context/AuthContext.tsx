@@ -4,17 +4,17 @@ import axios from "axios";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-       const [user, setUser] = useState(null);
+       const [authUser, setAuthUser] = useState(null);
        const [loading, setLoading] = useState(true);
 
        const checkAuth = async () => {    // function for get user data 
               try {
-                     const { data } = await axios.get("http://localhost:8000/auth", {
+                     const { data } = await axios.get(`${import.meta.env.VITE_API}/auth`, {
                             withCredentials: true,
-                     });
-                     setUser(data.response);
+                     });                     
+                     setAuthUser(data.response);
               } catch (err) {
-                     setUser(null);
+                     setAuthUser(null);
               } finally {
                      setLoading(false);
               }
@@ -27,10 +27,10 @@ export function AuthProvider({ children }) {
        return (
               <AuthContext.Provider
                      value={{
-                            user,
+                            authUser,
                             loading,
                             checkAuth,
-                            isAuthenticated: !!user,    // double NOT (!!) operator to convert any value into a boolean
+                            isAuthenticated: !!authUser,    // double NOT (!!) operator to convert any value into a boolean
                      }}
               >
                      {children}

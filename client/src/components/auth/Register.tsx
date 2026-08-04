@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
+import { usePopup } from "../../context/Popup";
 
 export default function Register({ setIsRegister }) {
+       const { setPopup, setShowPopUp } = usePopup();
        const [loading, setLoading] = useState(false);
        const [formData, setFormData] = useState({
               restaurantName: "",
@@ -13,26 +15,38 @@ export default function Register({ setIsRegister }) {
               role: "Admin",
        });
 
-       const handleChange = (e) => {
+       const handleChange = (e:any) => {
               setFormData((prev) => ({
                      ...prev,
                      [e.target.name]: e.target.value,
               }));
        };
 
-       const handleSubmit = async (e) => {
+       const handleSubmit = async (e:any) => {
               e.preventDefault();
               try {
                      setLoading(true);
-                     const { data } = await axios.post("http://localhost:5000/auth/signup", formData,
+                     const { data } = await axios.post(`${import.meta.env.VITE_API}/auth/`, formData,
                             { withCredentials: true }
-                     );
-                     alert(data.message);
-                     setIsRegister(false);
-
+                     );                     
+                     setShowPopUp(true)
+                     setPopup({
+                            msg: data.message,
+                            bgColor: data.success ? ("bg-green-500") : ("bg-red-500")
+                     })
+                     if (data.success) {
+                            setIsRegister(false)
+                     }
               } catch (err) {
                      console.log(err.response?.data?.message || "Registration failed");
               } finally {
+                     setTimeout(() => {
+                            setPopup({
+                                   msg: "",
+                                   bgColor: ""
+                            })
+                            setShowPopUp(false)
+                     }, 2500)
                      setLoading(false);
               }
        };
