@@ -34,7 +34,8 @@ async function handleCreateResaurent(req, res) {
                      ownerName: ownerName,
                      email: email,
                      phone: phone,
-                     gstNumber: gstNumber
+                     gstNumber: gstNumber,
+                     role:role
               });
 
               const hashedPassword = await bcrypt.hash(password, 10);  // Hash the password

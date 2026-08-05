@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { usePopup } from "../../context/Popup";
 
@@ -33,18 +32,14 @@ export default function Login() {
                                    withCredentials: true,      // used for recieve cookies during login api
                             }
                      );
-                     console.log(data);
-                     await checkAuth();
+                     await checkAuth();   // check for login using cookis
                      setPopup({
                             msg: data.message,
                             bgColor: data.success ? ("bg-green-500") : ("bg-red-500")
                      })
-                     setShowPopUp(true)  // check for login using cookis
+                     setShowPopUp(true)  
               } catch (err) {
                      console.log(err);
-                     alert(
-                            err.response?.data?.message || "Login failed"
-                     );
               } finally {
                      setTimeout(() => {
                             setPopup({

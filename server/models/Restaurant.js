@@ -26,7 +26,6 @@ const RestaurantSchema = new mongoose.Schema({
               type: String,
               required: true,
               enum: ["Admin", "Staff", "Kitchen"],
-              default: "Staff",
        },
        address: {
               type: String,

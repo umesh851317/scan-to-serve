@@ -6,12 +6,15 @@ import {
        Bell,
        UserCircle2,
        LogOut,
+       Power,
 } from "lucide-react";
 import { usePopup } from "../../context/Popup";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+       const [isOpen, setIsOpen] = useState(false);
        const { checkAuth } = useAuth();
        const { setPopup, setShowPopUp } = usePopup();
        const navigate = useNavigate();
@@ -20,6 +23,81 @@ const Header = () => {
        const userData = {
               name: "Umesh",
               role: "Admin",
+       };
+       const getRestaurantStatus = async () => {
+              try {
+                     const { data } = await axios.get(
+                            `${import.meta.env.VITE_API}/api/restaurent`,
+                            {
+                                   withCredentials: true,
+                            }
+                     );
+
+                     if (data.success) {
+                            setIsOpen(data.restaurent.isOpen);
+                     }
+
+              } catch (error) {
+                     console.log(error);
+
+                     setPopup({
+                            msg: "Failed to get restaurant status",
+                            bgColor: "bg-red-500",
+                     });
+
+                     setShowPopUp(true);
+
+                     setTimeout(() => {
+                            setShowPopUp(false);
+                     }, 2500);
+              }
+       };
+
+
+       const handleRestaurantStatus = async () => {
+              try {
+                     const newStatus = !isOpen;
+
+                     const { data } = await axios.patch(
+                            `${import.meta.env.VITE_API}/api/restaurent/restaurentStatus`,
+                            {
+                                   isOpen: newStatus,
+                            },
+                            {
+                                   withCredentials: true,
+                            }
+                     );
+
+                     if (data.success) {
+                            setIsOpen(newStatus);
+
+                            setPopup({
+                                   msg: newStatus
+                                          ? "Restaurant is now online"
+                                          : "Restaurant is now offline",
+                                   bgColor: newStatus
+                                          ? "bg-green-500"
+                                          : "bg-red-500",
+                            });
+
+                            setShowPopUp(true);
+                     }
+
+              } catch (error) {
+                     console.log(error);
+
+                     setPopup({
+                            msg: "Failed to update restaurant status",
+                            bgColor: "bg-red-500",
+                     });
+
+                     setShowPopUp(true);
+
+              } finally {
+                     setTimeout(() => {
+                            setShowPopUp(false);
+                     }, 2500);
+              }
        };
 
        const handleLogout = async () => {
@@ -38,10 +116,10 @@ const Header = () => {
                      });
 
                      setShowPopUp(true);
-                     setTimeout(() => { 
+                     setTimeout(() => {
                             navigate("/auth");
                             checkAuth();
-                     },1000)
+                     }, 1000)
               } catch (error) {
                      console.log("456");
                      setPopup({
@@ -60,8 +138,25 @@ const Header = () => {
                      }, 900)
               }
        };
+       useEffect(() => {
+              getRestaurantStatus();
+       }, []);
        return (
               <nav className=" h-full flex justify-between items-center py-4 px-6 bg-[#1a1a1a]">
+                     {/* toggle btn */}
+                     <button
+                            type="button"
+                            onClick={handleRestaurantStatus}
+                            className={`relative w-20 h-10 rounded-full transition-colors duration-300 ${isOpen ? "bg-green-500" : "bg-[#3a3a3a]"
+                                   }`}
+                     >
+                            <span
+                                   className={`absolute top-1 left-1 w-8 h-8 bg-white rounded-full shadow-md
+                                           transition-transform duration-300 ease-in-out
+                                           ${isOpen ? "translate-x-10" : "translate-x-0"}`}
+                            />
+                     </button>
+
                      {/* LOGO */}
                      <div
                             onClick={() => navigate("/")}
@@ -74,16 +169,6 @@ const Header = () => {
                             </h1>
                      </div>
 
-                     {/* SEARCH */}
-                     {/* <div className="flex items-center gap-4 bg-[#424242] rounded-[15px] px-5 py-2 w-[600px]">
-        <Search className="text-[#f5f5f5]" size={20} />
-
-        <input
-          type="text"
-          placeholder="Search"
-          className="bg-transparent outline-none text-[#f5f5f5] w-full"
-        />
-      </div> */}
 
                      {/* USER DETAILS */}
                      <div className="flex items-center gap-4">

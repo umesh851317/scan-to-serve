@@ -31,7 +31,7 @@ const Admin = () => {
               <main className="h-screen relative">
 
                      {/* Header */}
-                     <header className="h-[7vh] w-full fixed top-0 left-0 z-50 bg-white">
+                     <header className="h-[8vh] w-full fixed top-0 left-0 z-50 bg-white">
                             <Headers />
                      </header>
 

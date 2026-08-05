@@ -11,6 +11,7 @@ import AdminInfo from "../../Ui/profile/AdminInfo";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { usePopup } from "../../context/Popup";
+import ResaurentSetting from "../../Ui/profile/ResaurentSetting";
 const bottomNav = [
        {
               id: 1,
@@ -149,7 +150,7 @@ const Profile = () => {
                                    userDetails={{ user, setUser, handleSave }} />}
 
                             {/* RESTAURANT SETTINGS */}
-                            {/* {activeTab === "Restaurant Settings" && <RestaurantSettings restaurantInfo={{ restaurant, setRestaurant }} />} */}
+                            {activeTab === "Restaurant Settings" && <ResaurentSetting />}
 
                             {/* STAFF MANAGEMENT */}
                             {/* {activeTab === "Staff Management" && <StaffManagement staffInfo={{ staffs, setStaffs }} />} */}
