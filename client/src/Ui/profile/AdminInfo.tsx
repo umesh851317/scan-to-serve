@@ -92,19 +92,6 @@ const AdminInfo = ({ userDetails }: any) => {
 
        return (
               <div className='h-full flex flex-col gap-4 overflow-y-scroll overflow-hidden p-2 '>
-                     {/* HEADER */}
-                     <div className="flex items-center justify-between">
-                            <div>
-                                   <h1 className="text-3xl font-bold text-[#f5f5f5]">
-                                          Admin Profile
-                                   </h1>
-
-                                   <p className="text-[#ababab] mt-2">
-                                          Manage your personal account details
-                                   </p>
-                            </div>
-                     </div>
-
                      {/* PROFILE CARD */}
                      <div className="bg-[#1f1f1f] rounded-2xl p-6 flex items-center gap-6">
                             {/* IMAGE */}

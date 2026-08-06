@@ -42,7 +42,6 @@ async function handleUpdateRestaurent(req, res) {
               }
               const { restaurantName, ownerName, phone, email, address, zipCode, gstNumber, openTime, closeTime } = req.body
               if (!restaurantName || !ownerName || !phone || !email || !address || !zipCode || !gstNumber || !openTime || !closeTime) {
-                     console.log(restaurantName, ownerName, phone, email, address, zipCode, gstNumber, openTime, closeTime);
                      return res.json({
                             success: false,
                             message: "data not recieved...",
@@ -110,8 +109,8 @@ const updateRestaurantStatus = async (req, res) => {
               return res.status(200).json({
                      success: true,
                      message: isOpen
-                            ? "Restaurant opened successfully"
-                            : "Restaurant closed successfully",
+                            ? "Restaurant is acepting the order"
+                            : "Restaurant is not accepting order",
                      isOpen: restaurant.isOpen,
               });
 

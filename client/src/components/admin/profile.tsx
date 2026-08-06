@@ -12,10 +12,11 @@ import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { usePopup } from "../../context/Popup";
 import ResaurentSetting from "../../Ui/profile/ResaurentSetting";
+import StaffManagement from "../../Ui/profile/StaffManagement";
 const bottomNav = [
        {
               id: 1,
-              title: "Admin Profile",
+              title: "Profile",
               description: "Manage admin profile",
               icon: <User size={22} />,
        },
@@ -37,7 +38,7 @@ const bottomNav = [
 const Profile = () => {
        const { authUser } = useAuth();
        const { setPopup, setShowPopUp } = usePopup();
-       const [activeTab, setActiveTab] = useState("Admin Profile");
+       const [activeTab, setActiveTab] = useState("Profile");
        const [user, setUser] = useState<any>(authUser);
 
        const handleSave = async (formData: any) => {
@@ -146,14 +147,14 @@ const Profile = () => {
                      {/* RIGHT CONTENT */}
                      <div className=" bg-[#262626] rounded-2xl text-white ">
                             {/* PROFILE */}
-                            {activeTab == "Admin Profile" && <AdminInfo
+                            {activeTab == "Profile" && <AdminInfo
                                    userDetails={{ user, setUser, handleSave }} />}
 
                             {/* RESTAURANT SETTINGS */}
                             {activeTab === "Restaurant Settings" && <ResaurentSetting />}
 
                             {/* STAFF MANAGEMENT */}
-                            {/* {activeTab === "Staff Management" && <StaffManagement staffInfo={{ staffs, setStaffs }} />} */}
+                            {activeTab === "Staff Management" && <StaffManagement />}
 
                      </div>
               </div>

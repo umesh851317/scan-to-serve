@@ -15,14 +15,12 @@ import { useEffect, useState } from "react";
 
 const Header = () => {
        const [isOpen, setIsOpen] = useState(false);
-       const { checkAuth } = useAuth();
+       const { authUser, checkAuth } = useAuth();
        const { setPopup, setShowPopUp } = usePopup();
        const navigate = useNavigate();
-
-       // TEMP USER DATA
        const userData = {
-              name: "Umesh",
-              role: "Admin",
+              name: authUser.name.split(" ")[0],
+              role: authUser.role,
        };
        const getRestaurantStatus = async () => {
               try {
@@ -73,8 +71,8 @@ const Header = () => {
 
                             setPopup({
                                    msg: newStatus
-                                          ? "Restaurant is now online"
-                                          : "Restaurant is now offline",
+                                          ? "Restaurant is now accepting order"
+                                          : "Restaurant is not accepting order",
                                    bgColor: newStatus
                                           ? "bg-green-500"
                                           : "bg-red-500",

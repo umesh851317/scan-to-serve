@@ -35,7 +35,7 @@ async function handleCreateResaurent(req, res) {
                      email: email,
                      phone: phone,
                      gstNumber: gstNumber,
-                     role:role
+                     role: role
               });
 
               const hashedPassword = await bcrypt.hash(password, 10);  // Hash the password
@@ -52,10 +52,13 @@ async function handleCreateResaurent(req, res) {
               res.status(201).json({
                      success: true,
                      message: "Resaurent create succefully",
-                     // restaurant, user
               });
        } catch (error) {
               console.log(error);
+              res.json({
+                     success: false,
+                     message: "server error",
+              });
        }
 }
 
@@ -98,10 +101,6 @@ async function handleSignIn(req, res) {
               maxAge: 1 * 8 * 60 * 60 * 1000,   // The cookie expires after 1 days.(3,600,000ms)
               // maxAge: 1 * 24 * 60 * 60 * 1000,   // The cookie expires after 1 days.(86,400,000ms)
        });
-
-
-       // console.log(token);
-
 
        return res.status(200).json({
               success: true,
@@ -255,4 +254,167 @@ async function logout(req, res) {
               message: "Logout successfully",
        });
 };
-module.exports = { handleCreateResaurent, handleSignIn, getUserDetails, updateUserDetails, changePassword, logout }
+
+const createStaff = async (req, res) => {
+       try {
+              const { name, email, phone, role } = req.body
+              const { restaurantId } = req.user
+              if (!name || !email || !phone || !role) {
+                     return res.json({
+                            success: false,
+                            message: "req.body is empty....",
+                     });
+              }
+              const isExist = await User.findOne({ email })
+              if (isExist) {
+                     return res.json({
+                            success: false,
+                            message: "user with this email alredy exist....",
+                     });
+              }
+              if (!restaurantId) {
+                     return res.json({
+                            success: false,
+                            message: "unauthorized....",
+                     });
+              }
+              const password = name.split(" ")[0];
+              const hashedPassword = await bcrypt.hash(password, 10);  // Hash the password
+
+              // CREATE ADMIN USER
+              const user = await User.create({
+                     name: name,
+                     email: email,
+                     phone: phone,
+                     password: hashedPassword,
+                     role: role,
+                     restaurantId: restaurantId,        // unique id of restaurent
+              });
+              return res.json({
+                     success: true,
+                     message: "add staff succefully....",
+                     user
+              });
+       } catch (error) {
+
+       }
+}
+
+const getAllStaff = async (req, res) => {
+       try {
+              const { restaurantId } = req.user
+              if (!restaurantId) {
+                     return res.json({
+                            response: null,
+                            success: false,
+                            message: "Unauthorized",
+                     });
+              }
+
+
+              const user = await User.find({
+                     restaurantId,
+                     role: { $ne: "Admin" }
+              })
+                     .select("-password")
+
+              if (!user) {
+                     return res.json({
+                            message: "User not found",
+                     });
+              }
+
+              res.status(200).json({
+                     message: "fetch succefully.....",
+                     success: true,
+                     user
+              });
+       } catch (error) {
+              res.status(500).json({
+                     message: error.message,
+              });
+       }
+}
+
+const deleteStaff = async (req, res) => {
+       try {
+              const { restaurantId } = req.user
+              const { id } = req.params;
+              if (!restaurantId) {
+                     return res.json({
+                            response: null,
+                            success: false,
+                            message: "Unauthorized",
+                     });
+              }
+
+
+              const user = await User.findByIdAndDelete(id)
+              if (!user) {
+                     return res.json({
+                            success: false,
+                            message: "User not found",
+                     });
+              }
+
+              res.status(200).json({
+                     message: "delete succefully.....",
+                     success: true,
+              });
+       } catch (error) {
+              res.status(500).json({
+                     message: error.message,
+              });
+       }
+}
+
+const handleUpdateStaffByAdmin = async (req, res) => {
+       try {
+              const { restaurantId } = req.user
+              if (!restaurantId) {
+                     return res.json({
+                            response: null,
+                            success: false,
+                            message: "Unauthorized",
+                     });
+              }
+              const { id } = req.params;
+              if (!id) {
+                     return res.json({
+                            success: false,
+                            message: "staff id is not recieved...",
+                     });
+              }
+              const { name, email, phone, role } = req.body
+              if (!name || !email || !phone || !role) {
+                     return res.json({
+                            success: false,
+                            message: "Staff data is not recieved...",
+                     });
+              }
+              const updatedUser = await User.findByIdAndUpdate(
+                     id,
+                     {
+                            name, email, phone, role
+                     },
+                     {
+                            returnDocument: "after",    // return the new updated document 
+                            runValidators: true,        // validate the schema
+                     }
+              );
+              if (!updatedUser) {
+                     return res.json({
+                            success: false,
+                            message: "user not availble...",
+                     });
+              }
+              res.json({
+                     success: true,
+                     message: "user details update succefully...",
+                     updatedUser
+              });
+       } catch (error) {
+              console.log(error);
+       }
+}
+module.exports = { handleCreateResaurent, handleSignIn, getUserDetails, updateUserDetails, changePassword, logout, createStaff, getAllStaff, deleteStaff, handleUpdateStaffByAdmin }
