@@ -1,31 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Headers from "../components/shared/headers";
 import Footer from "../components/shared/footer";
 import Profile from "../components/admin/profile";
 import PopUpMsg from "../components/popUpMsg/PopUpMsg";
 import { usePopup } from "../context/Popup";
+import Table from "../components/admin/table";
 
 const Admin = () => {
-       const {showPopUp} = usePopup();
-       // console.log("vbnvi..", showPopUp)
+       const { showPopUp } = usePopup();
        const [adminCompo, setAdminCompo] = useState("Profile");
 
-       // const checkAuth = async () => {    // function for get user data
-       //        try {
-       //               const respo = await axios.get("http://localhost:8000/api/admin", {
-       //                      withCredentials: true,
-       //               });
-       //               console.log(respo.data);
-
-       //        } catch (err) {
-       //               console.log(err)
-       //        } finally {
-       //        }
-       // };
-
-       // useEffect(() => {
-       //        checkAuth()
-       // })
+       useEffect(() => {
+              const currCompo = sessionStorage.getItem("adminCompo")
+              if (currCompo) {
+                     setAdminCompo(currCompo)
+              } else {
+                     setAdminCompo("Profile")
+              }
+       }, [])
 
        return (
               <main className="h-screen relative">
@@ -39,8 +31,8 @@ const Admin = () => {
                      <section className="h-full w-full fixed top-[7vh] bg-[#1f1f1f]">
                             {/* {adminCompo === "Dashboard" && <Dashboard />}
     {adminCompo === "Orders" && <Orders />}
-    {adminCompo === "Tables" && <Tables />}
     {adminCompo === "Menu" && <RestaurentMenu />} */}
+                            {adminCompo === "Tables" && <Table />}
                             {adminCompo === "Profile" && <Profile />}
                      </section>
 

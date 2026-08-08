@@ -7,12 +7,18 @@ import {
 } from "lucide-react";
 
 const Footer = ({ homeCompo }) => {
+       const { adminCompo, setAdminCompo } = homeCompo
        return (
               <div
                      className={`h-full bg-[#262626] p-2 flex justify-around items-center transition-all duration-500 z-50 bottom-0 opacity-100`}>
                      {/* DASHBOARD */}
-                     <button onClick={() => homeCompo.setAdminCompo("Dashboard")}
-                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full ${homeCompo.adminCompo === "Dashboard" ? "text-[#f5f5f5] bg-[#343434]" : "text-[#ababab]"}`}
+                     <button onClick={() => {
+                            setAdminCompo("Dashboard")
+                            sessionStorage.setItem("adminCompo", "Dashboard")
+                     }
+                     }
+                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full 
+                     ${adminCompo === "Dashboard" ? "text-[#f5f5f5] bg-[#343434]" : "text-[#ababab]"}`}
                      >
                             <Home className="mr-2" size={20} />
                             <p>Dashboard</p>
@@ -20,10 +26,14 @@ const Footer = ({ homeCompo }) => {
 
                      {/* ORDERS */}
                      <button
-                            onClick={() => homeCompo.setAdminCompo("Orders")}
-                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full ${homeCompo.adminCompo === "Orders"
-                                   ? "text-[#f5f5f5] bg-[#343434]"
-                                   : "text-[#ababab]"
+                            onClick={() => {
+                                   setAdminCompo("Orders")
+                                   sessionStorage.setItem("adminCompo", "Orders")
+                            }}
+                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full 
+                                   ${adminCompo === "Orders"
+                                          ? "text-[#f5f5f5] bg-[#343434]"
+                                          : "text-[#ababab]"
                                    }`}
                      >
                             <ClipboardList className="mr-2" size={20} />
@@ -32,10 +42,14 @@ const Footer = ({ homeCompo }) => {
 
                      {/* ORDERS */}
                      <button
-                            onClick={() => homeCompo.setAdminCompo("Menu")}
-                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full ${homeCompo.adminCompo === "Orders"
-                                   ? "text-[#f5f5f5] bg-[#343434]"
-                                   : "text-[#ababab]"
+                            onClick={() => {
+                                   setAdminCompo("Menu")
+                                   sessionStorage.setItem("adminCompo", "Menu")
+                            }}
+                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full 
+                                   ${adminCompo === "Orders"
+                                          ? "text-[#f5f5f5] bg-[#343434]"
+                                          : "text-[#ababab]"
                                    }`}
                      >
                             <ClipboardList className="mr-2" size={20} />
@@ -44,10 +58,14 @@ const Footer = ({ homeCompo }) => {
 
                      {/* TABLES */}
                      <button
-                            onClick={() => homeCompo.setAdminCompo("Tables")}
-                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full ${homeCompo.adminCompo === "Tables"
-                                   ? "text-[#f5f5f5] bg-[#343434]"
-                                   : "text-[#ababab]"
+                            onClick={() => {
+                                   setAdminCompo("Tables")
+                                   sessionStorage.setItem("adminCompo", "Tables")
+                            }}
+                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full 
+                                   ${adminCompo === "Tables"
+                                          ? "text-[#f5f5f5] bg-[#343434]"
+                                          : "text-[#ababab]"
                                    }`}
                      >
                             <Table2 className="mr-2" size={20} />
@@ -56,10 +74,14 @@ const Footer = ({ homeCompo }) => {
 
                      {/* Profile */}
                      <button
-                            onClick={() => homeCompo.setAdminCompo("Profile")}
-                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full ${homeCompo.adminCompo === "More"
-                                   ? "text-[#f5f5f5] bg-[#343434]"
-                                   : "text-[#ababab]"
+                            onClick={() => {
+                                   setAdminCompo("Profile")
+                                   sessionStorage.setItem("adminCompo", "Profile")
+                            }}
+                            className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full 
+                                   ${adminCompo === "More"
+                                          ? "text-[#f5f5f5] bg-[#343434]"
+                                          : "text-[#ababab]"
                                    }`}
                      >
                             <p>Profile</p>
