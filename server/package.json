@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "scan to server for order mangement",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"

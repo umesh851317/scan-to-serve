@@ -98,7 +98,7 @@ async function updateTable(req, res) {
                      message: "table number are already Exist....",
               })
        }
-       const createTable = await Table.findByIdAndUpdate(
+       const updateTable = await Table.findByIdAndUpdate(
               id,
               {
                      tableNumber: newtableNum,
@@ -109,7 +109,7 @@ async function updateTable(req, res) {
                      runValidators: true,        // validate the schema
               }
        )
-       if (!createTable) {
+       if (!updateTable) {
               return res.json({
                      success: false,
                      message: "Error during table creation....",
@@ -117,7 +117,8 @@ async function updateTable(req, res) {
        }
        return res.json({
               success: true,
-              message: "Table update succefully...."
+              message: "Table update succefully....",
+              updateTable
        })
 }
 async function deleteTable(req, res) {
@@ -136,10 +137,10 @@ async function deleteTable(req, res) {
               });
        }
        const deleteTable = await Table.findByIdAndDelete(id)
-       if (!createTable) {
+       if (!deleteTable) {
               return res.json({
                      success: false,
-                     message: "Error during table creation....",
+                     message: "Error during table deletion....",
               })
        }
        return res.json({

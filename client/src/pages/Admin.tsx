@@ -5,6 +5,7 @@ import Profile from "../components/admin/profile";
 import PopUpMsg from "../components/popUpMsg/PopUpMsg";
 import { usePopup } from "../context/Popup";
 import Table from "../components/admin/table";
+import Menu from "../components/admin/menu";
 
 const Admin = () => {
        const { showPopUp } = usePopup();
@@ -30,8 +31,8 @@ const Admin = () => {
                      {/* Content */}
                      <section className="h-full w-full fixed top-[7vh] bg-[#1f1f1f]">
                             {/* {adminCompo === "Dashboard" && <Dashboard />}
-    {adminCompo === "Orders" && <Orders />}
-    {adminCompo === "Menu" && <RestaurentMenu />} */}
+    {adminCompo === "Orders" && <Orders />}*/}
+                            {adminCompo === "Menu" && <Menu />}
                             {adminCompo === "Tables" && <Table />}
                             {adminCompo === "Profile" && <Profile />}
                      </section>
