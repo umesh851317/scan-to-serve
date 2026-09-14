@@ -4,6 +4,10 @@ import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
+import ConfirmTable from "./pages/customer/ConfirmTable";
+import CustomerHome from "./pages/customer/CustomerHome";
+import ProtectCustomerRoute from "./components/ProtectedRoute/ProtectCustomerRoute";
+import { CustomerProvider } from "./context/CustomerContext";
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
@@ -36,7 +40,21 @@ function App() {
         />
 
         {/* Customer routes */}
-        {/* <Route path="/customer/*" element={<Customer />} /> */}
+        <Route
+          path="/confirmTable/:tableId"
+          element={<ConfirmTable />}
+        />
+
+        <Route
+          path="/customerMenu/:restaurantId"
+          element={
+            <CustomerProvider>
+              <ProtectCustomerRoute>      {/* Protected routes for customer */}
+                <CustomerHome />
+              </ProtectCustomerRoute>
+            </CustomerProvider>
+          }
+        />
       </Routes>
     </>
   );

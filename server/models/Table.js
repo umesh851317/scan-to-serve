@@ -25,8 +25,8 @@ const tableSchema = new mongoose.Schema({
        pin: {
               type: Number,
        },
-       sessionStartedAt: {
-              type: Date,
+       sessionId: {
+              type: mongoose.Schema.Types.ObjectId,
               default: null
        },
        members: [
@@ -35,6 +35,10 @@ const tableSchema = new mongoose.Schema({
                             type: String,
                             required: true,
                             trim: true,
+                     },
+                     phone: {
+                            type: Number,
+                            required: true,
                      },
                      joinedAt: {
                             type: Date,

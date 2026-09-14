@@ -3,7 +3,7 @@ import { QRCodeCanvas } from "qrcode.react";
 // import { QRCodeCanvas } from "qrcode.react";
 const ViewTable = ({ tableData }) => {
        const { viewTable, setViewTable } = tableData
-       console.log("viewTable", viewTable);
+       const URl = `${import.meta.env.VITE_API_URL}/confirmTable/${viewTable._id}`
 
        return (
               <div className="bg-[#262626] h-[85%] w-full max-w-4xl rounded-3xl border border-[#333] max-h-[90vh] overflow-y-auto scrollbar-hide">
@@ -78,9 +78,7 @@ const ViewTable = ({ tableData }) => {
                                           </p>
 
                                           <h1 className="text-5xl font-bold text-blue-400">
-                                                 {viewTable.pin != null
-                                                        ? viewTable.pin
-                                                        : "NA"}
+                                                 {viewTable.pin || "NA"}
                                           </h1>
 
                                    </div>
@@ -90,40 +88,26 @@ const ViewTable = ({ tableData }) => {
 
                             {/* QR CODE */}
                             <div className="bg-[#1f1f1f] rounded-3xl p-6 border border-[#333] mb-6">
-
                                    <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-
                                           <div className="w-full">
-
                                                  <h2 className="text-2xl font-bold text-white mb-2">
                                                         Table QR Code
                                                  </h2>
-
                                                  <p className="text-[#ababab] mb-4">
                                                         Scan this QR to join the table
                                                  </p>
-
                                                  <div className="bg-[#262626] px-4 py-3 rounded-2xl border border-[#333] break-all text-sm text-yellow-400">
-                                                        {viewTable.qrCode}
+                                                        {URl}
                                                  </div>
-
                                           </div>
-
-
                                           <div className="bg-white p-4 rounded-3xl shrink-0">
-
                                                  <QRCodeCanvas
                                                         value={viewTable.qrCode}
                                                         size={200}
                                                  />
-
                                           </div>
-
                                    </div>
-
                             </div>
-
-
                             {/* MEMBERS */}
                             <div className="bg-[#1f1f1f] rounded-3xl p-6 border border-[#333] mb-6">
 
@@ -170,85 +154,6 @@ const ViewTable = ({ tableData }) => {
                                    }
 
                             </div>
-
-
-                            {/* ORDERS */}
-                            {/* <div className="bg-[#1f1f1f] rounded-3xl p-6 border border-[#333] mb-6">
-
-                            <div className="flex items-center justify-between mb-5">
-
-                                   <h2 className="text-2xl font-bold text-white">
-                                          Orders
-                                   </h2>
-
-                                   <div className="bg-[#262626] px-4 py-2 rounded-xl text-green-400 font-semibold">
-                                          {viewTable.orders.length} Orders
-                                   </div>
-
-                            </div>
-
-
-                            {
-                                   viewTable.orders.length > 0 ? (
-
-                                          <div className="space-y-3">
-
-                                                 {
-                                                        viewTable.orders.map((order, index) => (
-
-                                                               <div
-                                                                      key={index}
-                                                                      className="bg-[#262626] border border-[#333] rounded-2xl p-5"
-                                                               >
-                                                                      <h3 className="text-white font-semibold">
-                                                                             Order #{index + 1}
-                                                                      </h3>
-                                                               </div>
-
-                                                        ))
-                                                 }
-
-                                          </div>
-
-                                   ) : (
-
-                                          <div className="text-[#777] text-lg">
-                                                 No orders yet
-                                          </div>
-
-                                   )
-                            }
-
-                     </div> */}
-
-
-                            {/* FOOTER */}
-                            {/* <div className="bg-yellow-400 rounded-3xl p-5 flex flex-col md:flex-row items-center justify-between gap-4">
-
-                            <div>
-
-                                   <h2 className="text-2xl font-bold text-black">
-                                          Table Created
-                                   </h2>
-
-                                   <p className="text-black/70 mt-1 font-medium">
-                                          {
-                                                 new Date(viewTable.createdAt)
-                                                        .toLocaleString()
-                                          }
-                                   </p>
-
-                            </div>
-
-
-                            <button
-                                   onClick={() => setViewTable(null)}
-                                   className="bg-black hover:bg-[#111] transition text-white px-8 py-4 rounded-2xl font-semibold"
-                            >
-                                   Close
-                            </button>
-
-                     </div> */}
                      </div>
 
               </div>

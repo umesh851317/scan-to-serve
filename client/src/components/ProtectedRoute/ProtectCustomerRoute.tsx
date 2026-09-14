@@ -1,8 +1,7 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useCustomerAuth } from "../../context/CustomerContext";
 
-const ProtectedRoute = ({ children }) => {
-       const { authUser, loading } = useAuth();
+const ProtectCustomerRoute = ({ children }) => {
+       const { customerDetails, loading } = useCustomerAuth();
 
        if (loading) {
               return (
@@ -11,11 +10,10 @@ const ProtectedRoute = ({ children }) => {
                      </div>);
        }
 
-       if (!authUser) {
-              return <Navigate to="/auth" replace />;
+       if (!customerDetails) {
+              return <h1>customer details is not recieve</h1>
        }
-
        return children;
-};
+}
 
-export default ProtectedRoute;
+export default ProtectCustomerRoute

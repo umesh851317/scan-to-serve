@@ -47,7 +47,7 @@ const Table = () => {
        })
 
        useEffect(() => {
-              fetchTables()
+              fetchTables();
        }, [])
        return (
               <section className="bg-[#171717] h-full text-white flex flex-col pb-26">

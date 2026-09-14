@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import MenuCard from "../../Ui/menu/MenuCard";
-import FilterDropdown from "../../Ui/menu/FilterDropdown";
+// import FilterDropdown from "../../Ui/menu/FilterDropdown";
 import axios from "axios";
 import DeleteMenu from "../../Ui/menu/DeleteMenu";
 import MenuForm from "../../Ui/menu/menuForm";
 
 const Menu = () => {
        const [menuItemes, setMenuItemes] = useState([])
-       const [selectedCategory, setSelectedCategory] = useState("All");
-       const [selectedType, setSelectedType] = useState("All");
-       const [selectedPrice, setSelectedPrice] = useState("All");
+       // const [selectedCategory, setSelectedCategory] = useState("All");
+       // const [selectedType, setSelectedType] = useState("All");
+       // const [selectedPrice, setSelectedPrice] = useState("All");
        const [menuID, setMenuID] = useState(null)
        const [showDelete, setShowDelete] = useState(false)
        const [showMenuForm, setShowMenuForm] = useState(false)

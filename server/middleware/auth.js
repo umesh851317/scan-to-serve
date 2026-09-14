@@ -8,8 +8,6 @@ async function checkAuthentication(req, res, next) {
               });
        }
        const user = getUser(authorizationHeaderValue);       // verify the token
-       // console.log("token in getUser....", authorizationHeaderValue);
-
 
        req.user = user;     // send to the next midlware or controller (it's like it attach user in req)
        next();
@@ -27,6 +25,5 @@ function restricTo(roles) {
               return next()
        }
 }
-
 
 module.exports = { checkAuthentication, restricTo }

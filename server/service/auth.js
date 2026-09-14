@@ -6,13 +6,11 @@ function setUser(user) {
               restaurantId: user.restaurantId,
               email: user.email,
               role: user.role
-       }, secret,
-              { expiresIn: "1d" })
+       }, secret, { expiresIn: "1d" })
 }
 
 function getUser(token) {
        if (!token) {
-              
               return null
        };
        try {
