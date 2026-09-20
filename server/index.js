@@ -26,4 +26,4 @@ app.use("/api", protectRouter)
 // ---------->>>>>>>>> verify customer and table details 
 app.use("/verifyTable", verifyTable)
 
-app.use("/customerMenu/:restaurentId", CustomerProtectRouter)
+app.use("/customer", CustomerProtectRouter)

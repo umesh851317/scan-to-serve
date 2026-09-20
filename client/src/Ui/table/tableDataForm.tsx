@@ -22,9 +22,8 @@ const TableDataForm = ({ tableData }) => {
               try {
                      // ADD TABLE
                      if (!editTable) {
-                            console.log(formData);
                             const { data } = await axios.post(
-                                   `http://localhost:8000/api/table`,
+                                   `${import.meta.env.VITE_API}/api/table`,
                                    formData,
                                    {
                                           withCredentials: true
@@ -38,12 +37,18 @@ const TableDataForm = ({ tableData }) => {
                                    setShowPopUp(true)
                                    setShowTableForm(false)
                                    setTables((prev: any) => [...prev, data.newTable])
+                            } else {
+                                   setPopup({
+                                          msg: data.message,
+                                          bgColor: data.success ? ("bg-green-500") : ("bg-red-500")
+                                   })
+                                   setShowPopUp(true)
                             }
                      }
                      // EDIT TABLE
                      else {
                             const { data } = await axios.patch(
-                                   `http://localhost:8000/api/table/${editTable._id}`,
+                                   `${import.meta.env.VITE_API}/api/table/${editTable._id}`,
                                    formData,
                                    {
                                           withCredentials: true

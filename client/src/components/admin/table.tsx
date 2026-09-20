@@ -42,7 +42,6 @@ const Table = () => {
 
               const matchSearch =
                      item.tableNumber.toLowerCase().includes(query.toLowerCase());
-
               return matchCategory && matchSearch
        })
 

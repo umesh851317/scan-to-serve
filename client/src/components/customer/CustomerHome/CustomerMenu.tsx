@@ -1,14 +1,32 @@
 import { ArrowRight, ShoppingCart } from 'lucide-react';
-import React from 'react'
 import { useCustomerAuth } from '../../../context/CustomerContext';
 
 const CustomerMenu = ({ menuProps }) => {
   const { cart, totalCartItems, increaseQty, decreaseQty } = useCustomerAuth();
-  const { menu, setCustomerCompo } = menuProps
+  const { filteredFoods, setCustomerCompo, categories, activeCategory, setActiveCategory } = menuProps
   return (
     <div className="w-full pb-18">
+      <div className="sticky top-[21%] z-20 bg-white px-2 py-3 ">
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+          {categories.map((category: any) => (
+            <button
+              key={category}
+              type="button"
+              onClick={() => setActiveCategory(category)}
+              className={` shrink-0 rounded-full px-5 py-2.5 text-sm font-medium transition-all 
+                ${activeCategory === category
+                  ? "bg-orange-500 text-white shadow-sm"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }  `}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="flex w-full flex-col px-2">
-        {menu.map((item: any) => {
+        {filteredFoods.map((item: any) => {
           const cartItem = cart.find(
             (cartItem: any) => cartItem._id === item._id
           );

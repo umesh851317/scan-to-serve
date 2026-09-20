@@ -1,7 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const Table = require("../models/Table");
 const Menu = require("../models/Menu");
-const Orders = require("../models/OrdersSession");
+const TableSession = require("../models/TableSession");
 
 async function getTableStatus(req, res) {
        const { id } = req.params;
@@ -51,16 +51,18 @@ async function handleJoinTable(req, res) {
                      message: "Table data not found....",
               })
        }
-       // for first customer
+       let tableSession;
+       // for create customer session
        if (!tableData.isOccupied) {
-              const DbOrder = await Orders.create({
+              tableSession = await TableSession.create({
                      tableId: tableData._id,
                      tableNumber: tableData.tableNumber,
                      restaurantId: tableData.restaurantId,
+                     isSessionActive:true
               });
               tableData.isOccupied = true;
               tableData.pin = Math.floor(1000 + Math.random() * 9000);
-              tableData.sessionId = DbOrder._id;
+              tableData.sessionId = tableSession._id;
        } else {
               if (!pin) {
                      return res.json({
@@ -75,14 +77,26 @@ async function handleJoinTable(req, res) {
                      })
               }
        }
+       // Get existing table session
+       tableSession = await TableSession.findById(tableData.sessionId);
+
+       if (!tableSession) {
+              return res.json({
+                     success: false,
+                     message: "Table session not found",
+              });
+       }
        const memberId = new mongoose.Types.ObjectId();
        const newMember = {
               _id: memberId,
               name,
               phone
        };
-       tableData.members.push(newMember);
-       await tableData.save()
+       // Add customer to the session
+       tableSession.customerSummary.push(newMember)
+
+       await tableSession.save();
+       await tableData.save();
 
        const customeCookies = {
               customerId: newMember._id,
@@ -90,7 +104,7 @@ async function handleJoinTable(req, res) {
               tableId: tableData._id,
               tableNumber: tableData.tableNumber,
               restaurantId: tableData.restaurantId,
-              sessionId: tableData.sessionId,
+              sessionId: tableSession._id,
        }
        res.cookie("customerInfo", customeCookies, {
               httpOnly: true,      // prevents JavaScript running in the browser
@@ -100,9 +114,6 @@ async function handleJoinTable(req, res) {
               httpOnly: false,
               maxAge: 1 * 2 * 60 * 60 * 1000
        })
-
-       // const io = req.app.get("io");
-       // io.emit("Join_Table", tableData)
 
        return res.json({
               success: true,

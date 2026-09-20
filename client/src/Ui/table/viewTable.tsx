@@ -1,10 +1,29 @@
+import axios from "axios";
 import { QRCodeCanvas } from "qrcode.react";
+import { useEffect, useState } from "react";
 
 // import { QRCodeCanvas } from "qrcode.react";
 const ViewTable = ({ tableData }) => {
        const { viewTable, setViewTable } = tableData
        const URl = `${import.meta.env.VITE_API_URL}/confirmTable/${viewTable._id}`
-
+       const [joinMember, setJoinMember] = useState([])
+       const fetchTableData = async () => {
+              try {
+                     const { data } = await axios.get(
+                            `${import.meta.env.VITE_API}/api/table/${viewTable.sessionId}`,
+                            {
+                                   withCredentials: true,
+                            }
+                     )
+                     console.log(data);
+                     setJoinMember(data.sessionData.customerSummary);
+              } catch (error) {
+                     console.log(error);
+              }
+       }
+       useEffect(() => {
+              fetchTableData()
+       }, [])
        return (
               <div className="bg-[#262626] h-[85%] w-full max-w-4xl rounded-3xl border border-[#333] max-h-[90vh] overflow-y-auto scrollbar-hide">
 
@@ -109,7 +128,7 @@ const ViewTable = ({ tableData }) => {
                                    </div>
                             </div>
                             {/* MEMBERS */}
-                            <div className="bg-[#1f1f1f] rounded-3xl p-6 border border-[#333] mb-6">
+                            <div className="bg-[#1f1f1f]  items-center rounded-3xl p-6 border border-[#333] mb-6">
 
                                    <div className="flex items-center justify-between mb-5">
 
@@ -118,19 +137,19 @@ const ViewTable = ({ tableData }) => {
                                           </h2>
 
                                           <div className="bg-[#262626] px-4 py-2 rounded-xl text-yellow-400 font-semibold">
-                                                 {viewTable.members.length} Joined
+                                                 {joinMember.length} Joined
                                           </div>
 
                                    </div>
 
 
                                    {
-                                          viewTable.members.length > 0 ? (
+                                          joinMember.length > 0 ? (
 
                                                  <div className="flex flex-wrap gap-3">
 
                                                         {
-                                                               viewTable.members.map((member) => (
+                                                               joinMember.map((member: any) => (
 
                                                                       <div
                                                                              key={member._id}
@@ -145,11 +164,9 @@ const ViewTable = ({ tableData }) => {
                                                  </div>
 
                                           ) : (
-
                                                  <div className="text-[#777] text-lg">
                                                         No members joined yet
                                                  </div>
-
                                           )
                                    }
 

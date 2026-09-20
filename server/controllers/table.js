@@ -1,9 +1,9 @@
 const Table = require("../models/Table");
+const TableSession = require("../models/TableSession");
 
 async function createTable(req, res) {
        const { restaurantId } = req.user
        const { tableNumber, seats } = req.body
-       // console.log(restaurantId, tableNumber, seats);
        if (!restaurantId) {
               return res.json({
                      success: false,
@@ -17,10 +17,11 @@ async function createTable(req, res) {
               })
        }
        const newtableNum = "T" + tableNumber
-       const isExist = await Table.findOne({
+       const isExistTable = await Table.findOne({
+              restaurantId: restaurantId,
               tableNumber: newtableNum,
        })
-       if (isExist) {
+       if (isExistTable) {
               return res.json({
                      success: false,
                      message: "table number are already Exist....",
@@ -148,9 +149,31 @@ async function deleteTable(req, res) {
               message: "Table delete succefully...."
        })
 }
+async function getCurrentSessionData(req, res) {
+       const { sessionId } = req.params
+       if (!sessionId) {
+              return res.json({
+                     success: false,
+                     message: "session id not recieve....",
+              })
+       }
+       const sessionData = await TableSession.findById({ _id: sessionId })
+       if (!sessionData) {
+              return res.json({
+                     success: false,
+                     message: "session data not recieve....",
+              })
+       }
+       return res.json({
+              sessionData,
+              success: true,
+              message: "current session data fetch succefully....",
+       })
+}
 module.exports = {
        createTable,
        getAlltables,
        updateTable,
-       deleteTable
+       deleteTable,
+       getCurrentSessionData
 }

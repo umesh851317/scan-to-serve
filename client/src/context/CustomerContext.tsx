@@ -5,18 +5,15 @@ import { useParams } from "react-router-dom";
 const CustomerContext = createContext(null);
 
 export function CustomerProvider({ children }) {
-       const { restaurantId } = useParams();
        const [loading, setLoading] = useState(true);
        const [customerDetails, setCustomerDetails] = useState();
        const [cart, setCart] = useState([])
 
        const verifyCustomer = async () => {
               try {
-                     const { data } = await axios.get(`${import.meta.env.VITE_API}/customerMenu/${restaurantId}/verifyCustomer`, {
+                     const { data } = await axios.get(`${import.meta.env.VITE_API}/customer/fetchCustomerData/verifyCustomer`, {
                             withCredentials: true,
-                     })
-                     // console.log(data.sessionId);
-                     
+                     })                     
                      if (data.success) {
                             setCustomerDetails(data.response)  // customer and table details
                      }

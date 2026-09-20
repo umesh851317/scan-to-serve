@@ -29,23 +29,6 @@ const tableSchema = new mongoose.Schema({
               type: mongoose.Schema.Types.ObjectId,
               default: null
        },
-       members: [
-              {
-                     name: {
-                            type: String,
-                            required: true,
-                            trim: true,
-                     },
-                     phone: {
-                            type: Number,
-                            required: true,
-                     },
-                     joinedAt: {
-                            type: Date,
-                            default: Date.now,
-                     },
-              },
-       ],
 },
        {
               timestamps: true,

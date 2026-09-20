@@ -7,7 +7,7 @@ const CustomerProtectRouter = express.Router({ mergeParams: true });
 
 CustomerProtectRouter.use(VarifyCustomer)
 
-CustomerProtectRouter.use("/", CustomerRouter);
+CustomerProtectRouter.use("/fetchCustomerData", CustomerRouter);
 
 CustomerProtectRouter.use("/Order", OrderRouter);
 

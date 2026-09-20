@@ -1,12 +1,15 @@
 import axios from 'axios';
-import { X } from 'lucide-react';
-import React, { useState } from 'react'
+import { Loader, Loader2, X } from 'lucide-react';
+import { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { useCustomerAuth } from '../../context/CustomerContext';
+import { usePopup } from '../../context/Popup';
 
 const OrderSummary = ({ orderSummaryProps }) => {
-       const { restaurantId, sessionId } = useParams();
-       const { customerDetails, cart } = useCustomerAuth()
+       const [loading, setLoading] = useState(false)
+       const { setPopup, setShowPopUp } = usePopup();
+       const { restaurantId } = useParams();
+       const { customerDetails, cart, setCart } = useCustomerAuth()
        const { setShowOrderPopup } = orderSummaryProps
        const [description, setDescription] = useState("");
 
@@ -21,17 +24,39 @@ const OrderSummary = ({ orderSummaryProps }) => {
               }
 
               try {
-                     const { data } = await axios.post(`${import.meta.env.VITE_API}/customerMenu/${restaurantId}/Order/${customerDetails.sessionId}`, Orders, {
+                     setLoading(true)
+                     const { data } = await axios.post(`${import.meta.env.VITE_API}/customer/Order/`, Orders, {
                             withCredentials: true,
                      })
-                     console.log(data, sessionId);
-
+                     if (data.success) {
+                            setPopup({
+                                   msg: data.message,
+                                   bgColor: data.success ? ("bg-green-500") : ("bg-red-500")
+                            })
+                            setShowPopUp(true)
+                            setCart([])
+                     } else {
+                            setPopup({
+                                   msg: data.message,
+                                   bgColor: data.success ? ("bg-green-500") : ("bg-red-500")
+                            })
+                            setShowPopUp(true)
+                     }
               } catch (error) {
-
+                     console.log(error);
+              } finally {
+                     setShowOrderPopup(false);
+                     setDescription("");
+                     setTimeout(() => {
+                            setPopup({
+                                   msg: "",
+                                   bgColor: ""
+                            })
+                            setShowPopUp(false)
+                     }, 2500)
+                     setLoading(false)
               }
 
-              setShowOrderPopup(false);
-              setDescription("");
        };
        return (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
@@ -85,9 +110,14 @@ const OrderSummary = ({ orderSummaryProps }) => {
 
                                    <button
                                           onClick={handlePlaceOrder}
-                                          className="flex-1 rounded-xl bg-orange-500 py-3 font-semibold text-white hover:bg-orange-600"
+                                          disabled={loading}
+                                          className="flex flex-1 items-center justify-center rounded-xl bg-orange-500 py-3 font-semibold text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70"
                                    >
-                                          Confirm Order
+                                          {loading ? (
+                                                 <Loader className="h-5 w-5 animate-spin" />
+                                          ) : (
+                                                 "Confirm Order"
+                                          )}
                                    </button>
 
                             </div>
