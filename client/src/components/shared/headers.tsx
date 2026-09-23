@@ -6,7 +6,6 @@ import {
        Bell,
        UserCircle2,
        LogOut,
-       Power,
 } from "lucide-react";
 import { usePopup } from "../../context/Popup";
 import axios from "axios";
@@ -50,7 +49,6 @@ const Header = () => {
                      }, 2500);
               }
        };
-
 
        const handleRestaurantStatus = async () => {
               try {
@@ -144,6 +142,7 @@ const Header = () => {
                      {/* toggle btn */}
                      <button
                             type="button"
+                            disabled={authUser.role == "Kitchen"}
                             onClick={handleRestaurantStatus}
                             className={`relative w-20 h-10 rounded-full transition-colors duration-300 ${isOpen ? "bg-green-500" : "bg-[#3a3a3a]"
                                    }`}
@@ -182,11 +181,11 @@ const Header = () => {
 
                                    <div className="flex flex-col items-start">
                                           <h1 className="text-md text-[#f5f5f5] font-semibold tracking-wide">
-                                                 {userData?.name || "TEST USER"}
+                                                 {userData?.name }
                                           </h1>
 
                                           <p className="text-xs text-[#ababab] font-medium">
-                                                 {userData?.role || "Role"}
+                                                 {userData?.role }
                                           </p>
                                    </div>
 

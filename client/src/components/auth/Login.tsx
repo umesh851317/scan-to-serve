@@ -32,7 +32,7 @@ export default function Login() {
                                    withCredentials: true,      // used for recieve cookies during login api
                             }
                      );
-                     await checkAuth();   // check for login using cookis
+                     await checkAuth();   // check for login using cookies
                      setPopup({
                             msg: data.message,
                             bgColor: data.success ? ("bg-green-500") : ("bg-red-500")

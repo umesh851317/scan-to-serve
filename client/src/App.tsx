@@ -8,9 +8,10 @@ import ConfirmTable from "./pages/customer/ConfirmTable";
 import CustomerHome from "./pages/customer/CustomerHome";
 import ProtectCustomerRoute from "./components/ProtectedRoute/ProtectCustomerRoute";
 import { CustomerProvider } from "./context/CustomerContext";
+import Kitchen from "./pages/Kitchen";
 
 function App() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, authUser } = useAuth();
   if (loading) {
     return <h1>Loading...</h1>;
   }
@@ -23,7 +24,11 @@ function App() {
           path="/auth"
           element={
             isAuthenticated ? (
-              <Navigate to="/admin" replace />
+              authUser.role === "Admin" ? (
+                <Navigate to="/admin" replace />
+              ) : (
+                <Navigate to="/kitchen" replace />
+              )
             ) : (
               <Auth />
             )
@@ -33,8 +38,17 @@ function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["Admin"]}>
               <Admin />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/kitchen"
+          element={
+            <ProtectedRoute allowedRoles={["Kitchen"]}>
+              <Kitchen />
             </ProtectedRoute>
           }
         />

@@ -16,7 +16,6 @@ const ConfirmTable = () => {
               try {
                      const { data } = await axios.get(`${import.meta.env.VITE_API}/verifyTable/${tableId}`)
                      setTableData(data.result);
-                     console.log("arrayToDestruct", data.result.restaurantId);
                      if (isAlreadyJoined) {
                             navigate(`/customerMenu/${data.result.restaurantId}`);
                      }
