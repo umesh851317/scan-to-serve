@@ -2,6 +2,7 @@ import {
        Home,
        ClipboardList,
        Table2,
+       UtensilsCrossed,
 } from "lucide-react";
 
 const Footer = ({ homeCompo }) => {
@@ -25,8 +26,8 @@ const Footer = ({ homeCompo }) => {
                      {/* ORDERS */}
                      <button
                             onClick={() => {
-                                   setAdminCompo("Orders")
-                                   sessionStorage.setItem("adminCompo", "Orders")
+                                   setAdminCompo("Payments")
+                                   sessionStorage.setItem("adminCompo", "Payments")
                             }}
                             className={`flex items-center justify-center font-bold w-75 rounded-[20px] h-full 
                                    ${adminCompo === "Orders"
@@ -35,7 +36,7 @@ const Footer = ({ homeCompo }) => {
                                    }`}
                      >
                             <ClipboardList className="mr-2" size={20} />
-                            <p>Orders</p>
+                            <p>Orders and Payment</p>
                      </button>
 
                      {/* ORDERS */}

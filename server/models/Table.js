@@ -24,6 +24,7 @@ const tableSchema = new mongoose.Schema({
        },
        pin: {
               type: Number,
+              default: null
        },
        sessionId: {
               type: mongoose.Schema.Types.ObjectId,

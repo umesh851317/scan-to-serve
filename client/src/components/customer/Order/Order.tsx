@@ -5,6 +5,7 @@ import {
        ChefHat,
        CheckCircle2,
        XCircle,
+       ClipboardList,
 } from "lucide-react";
 import { useState } from "react";
 import OrderItemCard from "../../../Ui/Customer/OrderItemCard";
@@ -75,7 +76,7 @@ const Orders = ({ ordersProps }) => {
        };
        return (
               <div className="flex w-full flex-col gap-2">
-                     <div className="sticky top-[21%] z-40 overflow-x-auto bg-white p-2">
+                     <div className="sticky top-[8.9%] z-40 overflow-x-auto bg-white p-2">
                             <div className="flex min-w-max gap-2">
                                    {statusFilters.map((status) => {
                                           const isActive = statusFilter === status;
@@ -102,57 +103,77 @@ const Orders = ({ ordersProps }) => {
 
                             </div>
                      </div>
-                     <div className=" px-2">
-                            {filteredOrders.map((order: any) => {
-                                   const config = statusConfig[order.status];
-                                   const StatusIcon = config.Icon;
-                                   return (
-                                          <div key={order._id}
-                                                 className="mb-2 w-full overflow-hidden rounded-2xl bg-white shadow-sm relative">
-                                                 <div className={`flex min-h-15 items-center justify-between px-3 ${config.bg}`}>
-                                                        <div className="flex items-center gap-2">
-                                                               {/* Status Icon */}
-                                                               <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${config.iconBg} ${config.iconColor}`}>
-                                                                      <StatusIcon size={21} />
-                                                               </div>
-
-                                                               <div>
-                                                                      <p className={`text-[15px] font-bold uppercase ${config.textColor}`} >
-                                                                             {config.label}
-                                                                      </p>
-
-                                                                      <p className="mt-0.5 text-[12px] text-gray-500">
-                                                                             Order by {order.customerName}
-                                                                      </p>
-                                                               </div>
-
-                                                        </div>
-
-                                                        {/* Expand Button */}
-                                                        <button
-                                                               onClick={() => {
-                                                                      setExpandedOrder(
-                                                                             expandedOrder === order._id ? null : order._id
-                                                                      );
-                                                               }}
-                                                               className="flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-gray-600 transition active:scale-90"
-                                                        >
-                                                               {expandedOrder === order._id ? (
-                                                                      <ChevronUp size={20} />
-                                                               ) : (
-                                                                      <ChevronDown size={20} />
-                                                               )}
-                                                        </button>
-                                                 </div>
-                                                 <OrderItemCard key={order._id}
-                                                        orderprops={{
-                                                               order,
-                                                               expanded: expandedOrder === order._id,
-                                                        }}
-                                                 />
+                     <div className="px-2">
+                            {filteredOrders.length === 0 ? (
+                                   <div className="flex min-h-[300px] flex-col items-center justify-center text-center">
+                                          <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+                                                 <ClipboardList size={30} className="text-gray-400" />
                                           </div>
-                                   )
-                            })}
+
+                                          <h3 className="text-base font-semibold text-gray-700">
+                                                 {statusFilter === "ALL"
+                                                        ? "No orders yet"
+                                                        : `No ${statusFilter.toLowerCase()} orders`}
+                                          </h3>
+
+                                          <p className="mt-1 max-w-[250px] text-sm text-gray-400">
+                                                 {status === "ALL"
+                                                        ? "Orders placed by customers will appear here."
+                                                        : `There are currently no ${statusFilter.toLowerCase()} orders.`}
+                                          </p>
+                                   </div>
+                            ) : (
+                                   filteredOrders.map((order: any) => {
+                                          const config = statusConfig[order.status];
+                                          const StatusIcon = config.Icon;
+                                          return (
+                                                 <div key={order._id}
+                                                        className="mb-2 w-full overflow-hidden rounded-2xl bg-white shadow-sm relative">
+                                                        <div className={`flex min-h-15 items-center justify-between px-3 ${config.bg}`}>
+                                                               <div className="flex items-center gap-2">
+                                                                      {/* Status Icon */}
+                                                                      <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${config.iconBg} ${config.iconColor}`}>
+                                                                             <StatusIcon size={21} />
+                                                                      </div>
+
+                                                                      <div>
+                                                                             <p className={`text-[15px] font-bold uppercase ${config.textColor}`} >
+                                                                                    {config.label}
+                                                                             </p>
+
+                                                                             <p className="mt-0.5 text-[12px] text-gray-500">
+                                                                                    Order by {order.customerName}
+                                                                             </p>
+                                                                      </div>
+
+                                                               </div>
+
+                                                               {/* Expand Button */}
+                                                               <button
+                                                                      onClick={() => {
+                                                                             setExpandedOrder(
+                                                                                    expandedOrder === order._id ? null : order._id
+                                                                             );
+                                                                      }}
+                                                                      className="flex h-9 w-9 items-center justify-center rounded-full bg-white/80 text-gray-600 transition active:scale-90"
+                                                               >
+                                                                      {expandedOrder === order._id ? (
+                                                                             <ChevronUp size={20} />
+                                                                      ) : (
+                                                                             <ChevronDown size={20} />
+                                                                      )}
+                                                               </button>
+                                                        </div>
+                                                        <OrderItemCard key={order._id}
+                                                               orderprops={{
+                                                                      order,
+                                                                      expanded: expandedOrder === order._id,
+                                                               }}
+                                                        />
+                                                 </div>
+                                          )
+                                   })
+                            )}
                      </div>
               </div>
        );

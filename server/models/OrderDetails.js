@@ -52,11 +52,20 @@ const OrderDetailsSchema = new mongoose.Schema({
               }],
        status: {
               type: String,
-              enum: ["Pending", "Preparing", "Ready", "Served", "Cancel","Completed"],
+              enum: ["Pending", "Preparing", "Ready", "Served", "Cancel", "Completed"],
               default: "Pending",
        },
        description: {
               type: String,
+       },
+       paymentStatus: {
+              type: String,
+              enum: ["UNPAID", "PENDING", "PAID", "FAILED"],
+              default: "UNPAID"
+       },
+       paymentId: {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: "Payment"
        }
 }, {
        timestamps: true,

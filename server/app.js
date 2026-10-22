@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");   // allows Express to easily rea
 app.use(cookieParser());
 
 const allowedOrigins = [           // client request which is express only allow
+       "http://localhost:5174",
        "http://localhost:5173",
        "https://scan-to-serve-xi-blush.vercel.app",
 ];

@@ -9,7 +9,10 @@ const protectRouter = require("./routes/protectedRoutes");
 const CustomerProtectRouter = require("./routes/customerProtectedRoutes");
 const verifyTable = require("./routes/verifyTable");
 // const verifyTable = require("./routes/verifyCustomer");
-
+app.get("/users", (req, res) => {
+       console.log(req.query);
+       return res.json(null)
+});
 connectMongoDb(process.env.MONGO_URI)     // function to connect mongoDb
        .then(() => {
               console.log("MongoDB Connected....")
