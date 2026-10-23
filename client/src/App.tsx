@@ -9,11 +9,16 @@ import CustomerHome from "./pages/customer/CustomerHome";
 import ProtectCustomerRoute from "./components/ProtectedRoute/ProtectCustomerRoute";
 import { CustomerProvider } from "./context/CustomerContext";
 import Kitchen from "./pages/Kitchen";
+import { LoaderIcon } from "lucide-react";
 
 function App() {
   const { isAuthenticated, loading, authUser } = useAuth();
   if (loading) {
-    return <h1>Loading...</h1>;
+    return (
+      <main className="h-full flex items-center justify-center">
+        <LoaderIcon size={30} className="animate-spin"></LoaderIcon>
+      </main>
+    )
   }
   return (
     <>

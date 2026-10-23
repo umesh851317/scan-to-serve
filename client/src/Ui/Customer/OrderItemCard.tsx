@@ -1,24 +1,20 @@
 import { CheckCircle2, ChefHat, Pencil, XCircle } from 'lucide-react';
-import OrderSummary from './OrderSummary';
 import { useState } from 'react';
 import CancelOrderPopUP from './CancelOrderPopUP';
 import EditOrderPopUP from './EditOrderPopUP';
+import { useCustomerAuth } from '../../context/CustomerContext';
 
 const OrderItemCard = ({ orderprops }) => {
+       const { customerDetails } = useCustomerAuth()
        const { order, expanded } = orderprops
        const isPending = order.status === "Pending";
        const isPreparing = order.status === "Preparing";
        const isReady = order.status === "Ready";
        const isServed = order.status === "Served";
+       const isOrderByYou = order.customerId === customerDetails.customerId
        // const isCancel = order.status === "Cancel";
        const [cancelOrderPopUP, setCancelOrderPopUP] = useState(null);
        const [editOrderPopUP, setEditOrderPopUP] = useState(null);
-       // Calculate total
-       const totalAmount = order.orders.reduce(
-              (total: number, item: any) =>
-                     total + item.price * item.quantity,
-              0
-       );
        return (
               <div className="w-full overflow-hidden rounded-2xl bg-white shadow-sm ">
                      {
@@ -73,14 +69,14 @@ const OrderItemCard = ({ orderprops }) => {
                             </span>
 
                             <span className="text-[21px] font-bold text-gray-900">
-                                   ₹{totalAmount.toFixed(2)}
+                                   ₹{order.totalAmount.toFixed(2)}
                             </span>
 
                      </div>
                      {/* ================= ACTIONS ================= */}
 
                      {/* PENDING */}
-                     {isPending && (
+                     {isPending && isOrderByYou && (
                             <div className="flex gap-3 m-1">
                                    {/* Edit */}
                                    <button onClick={() => { setEditOrderPopUP(order) }}

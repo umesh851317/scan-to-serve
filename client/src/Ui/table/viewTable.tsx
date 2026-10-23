@@ -15,7 +15,6 @@ const ViewTable = ({ tableData }) => {
                                    withCredentials: true,
                             }
                      )
-                     console.log(data);
                      setJoinMember(data.sessionData.customerSummary);
               } catch (error) {
                      console.log(error);

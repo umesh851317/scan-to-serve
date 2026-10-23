@@ -54,6 +54,18 @@ async function handleGetAllSessionOrders(req, res) {
               })
        }
        const sessionDetails = await OrderDetails.find({ sessionId: sessionId })
+       const ordersWithTotal = sessionDetails.map((order) => {
+
+              const totalAmount = order.orders.reduce((total, item) => {
+                     return total + (item.price * item.quantity);
+              }, 0);
+
+              return {
+                     ...order.toObject(),
+                     totalAmount
+              };
+       });
+
        if (!sessionDetails) {
               return res.json({
                      success: false,
@@ -63,34 +75,42 @@ async function handleGetAllSessionOrders(req, res) {
        return res.json({
               success: false,
               message: "session data fatch succefully.....",
-              orders: sessionDetails
+              orders: ordersWithTotal
        })
 
 }
 
 async function handleCancelOrderByCustomer(req, res) {
        const { sessionId, OrderId } = req.params;
-
+       const { customerId } = req.customerDetails
        const order = await OrderDetails.findById({ _id: OrderId })
-
+       if (order.paymentStatus == "PAID") {
+              return res.json({
+                     success: false,
+                     message: "orders is already paid please contact restaurent....."
+              })
+       }
        if (!order) {
               return res.json({
                      success: false,
                      message: "orders details not found....."
               })
-       } else {
-              await OrderDetails.findOneAndUpdate(
-                     {
-                            _id: OrderId,
-                     },
-                     {
-                            $set: {
-                                   "status": "Cancel",
-                            },
-                     },
-                     { new: true }
-              );
        }
+
+       if (customerId !== order.customerId.toString()) {
+              return res.json({
+                     success: false,
+                     message: "you can cancel Only your orders....."
+              })
+       }
+
+       await OrderDetails.findOneAndUpdate(
+              { _id: OrderId, },
+              {
+                     $set: { "status": "Cancel", },
+              },
+              { returnDocument: "after" }
+       );
 
        return res.json({
               sessionId, OrderId,
@@ -102,7 +122,7 @@ async function handleCancelOrderByCustomer(req, res) {
 async function handleupdateOrderByCustomer(req, res) {
        const { OrderId } = req.params;
        const { ordersDetails } = req.body;
-
+       const { customerId } = req.customerDetails
        const order = await OrderDetails.findById(OrderId);
 
        if (!order) {
@@ -112,6 +132,12 @@ async function handleupdateOrderByCustomer(req, res) {
               });
        }
 
+       if (customerId !== order.customerId.toString()) {
+              return res.json({
+                     success: false,
+                     message: "you can Edit Only your orders....."
+              })
+       }
        if (order.status !== "Pending") {
               return res.json({
                      success: false,

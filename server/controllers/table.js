@@ -151,13 +151,12 @@ async function deleteTable(req, res) {
 }
 async function getCurrentSessionData(req, res) {
        const { sessionId } = req.params
-       if (!sessionId) {
-              return res.json({
-                     success: false,
-                     message: "session id not recieve....",
-              })
+       if (!sessionId || sessionId === "null" ) {
+              return res.status(400).json({
+                     message: "Invalid session ID",
+              });
        }
-       const sessionData = await TableSession.findById({ _id: sessionId })
+       const sessionData = await TableSession.findById(sessionId);
        if (!sessionData) {
               return res.json({
                      success: false,

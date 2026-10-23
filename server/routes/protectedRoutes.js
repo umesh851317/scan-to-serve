@@ -6,6 +6,7 @@ const ResaurentRouter = require("./restaurentRouter");
 const TableRouter = require("./tableRouter");
 const MenuRouter = require("./menuRouter");
 const kitchenRoutes = require("./kitchenRoutes");
+const AdminPaymentRoutes = require("./AdminPaymentRoutes");
 const protectRouter = express.Router();
 
 protectRouter.use(checkAuthentication)
@@ -44,6 +45,12 @@ protectRouter.use(
        "/kitchen",
        restricTo(["Kitchen"]),
        kitchenRoutes
+);
+
+protectRouter.use(
+       "/payment",
+       restricTo(["Admin"]),
+       AdminPaymentRoutes
 );
 
 module.exports = protectRouter;

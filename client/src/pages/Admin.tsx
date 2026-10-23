@@ -6,12 +6,35 @@ import PopUpMsg from "../components/popUpMsg/PopUpMsg";
 import { usePopup } from "../context/Popup";
 import Table from "../components/admin/table";
 import Menu from "../components/admin/menu";
+import axios from "axios";
+import PaymentANDorders from "../components/admin/Payment&Orders";
 
 const Admin = () => {
        const { showPopUp } = usePopup();
        const [adminCompo, setAdminCompo] = useState("Profile");
+       const [tables, setTables] = useState([])
+       const fetchTables = async () => {
+              try {
+                     const { data } = await axios.get(
+                            `${import.meta.env.VITE_API}/api/table`,
+                            {
+                                   withCredentials: true,
+                            }
+                     )
+                     const sortedTables = [...data.tables].sort((a, b) => {
+                            return (
+                                   Number(a.tableNumber.slice(1)) -
+                                   Number(b.tableNumber.slice(1))
+                            );
+                     });
+                     setTables(sortedTables)
+              } catch (error) {
+                     console.log("error", error);
+              }
+       }
 
        useEffect(() => {
+              fetchTables();
               const currCompo = sessionStorage.getItem("adminCompo")
               if (currCompo) {
                      setAdminCompo(currCompo)
@@ -30,11 +53,10 @@ const Admin = () => {
 
                      {/* Content */}
                      <section className="h-full w-full fixed top-[7vh] bg-[#1f1f1f]">
-                            {/* {adminCompo === "Dashboard" && <Dashboard />}
-    {adminCompo === "Orders" && <Orders />}*/}
                             {adminCompo === "Menu" && <Menu />}
-                            {adminCompo === "Tables" && <Table />}
+                            {adminCompo === "Tables" && <Table tableProps={{ tables, setTables }} />}
                             {adminCompo === "Profile" && <Profile />}
+                            {adminCompo === "Payments" && <PaymentANDorders paymentProps={{ tables }} />}
                      </section>
 
                      {/* Footer */}
@@ -46,7 +68,7 @@ const Admin = () => {
                                    }}
                             />
                      </footer>
-
+                     
                      {showPopUp && <PopUpMsg />}
               </main>
        )

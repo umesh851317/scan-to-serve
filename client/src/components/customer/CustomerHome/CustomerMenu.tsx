@@ -1,12 +1,19 @@
-import { ArrowRight, ShoppingCart } from 'lucide-react';
+import { ArrowRight, Loader2, ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import { useCustomerAuth } from '../../../context/CustomerContext';
 
 const CustomerMenu = ({ menuProps }) => {
   const { cart, totalCartItems, increaseQty, decreaseQty } = useCustomerAuth();
-  const { filteredFoods, setCustomerCompo, categories, activeCategory, setActiveCategory } = menuProps
+  const { filteredFoods, setCustomerCompo, categories, activeCategory, setActiveCategory, loading } = menuProps
+  if (loading) {
+    return (
+      <div className='border flex h-full w-full items-center justify-center'>
+        <Loader2 size={24} className='animate-spin'></Loader2>
+      </div>
+    )
+  }
   return (
-    <div className="w-full pb-18">
-      <div className="sticky top-[21%] z-20 bg-white px-2 py-3 ">
+    <div className={`w-full ${totalCartItems > 0 && "pb-18" } `}>
+      <div className="sticky top-[8.9%] z-20 bg-white px-2 py-2">
         <div className="flex gap-3 overflow-x-auto scrollbar-hide">
           {categories.map((category: any) => (
             <button
@@ -26,86 +33,105 @@ const CustomerMenu = ({ menuProps }) => {
       </div>
 
       <div className="flex w-full flex-col px-2">
-        {filteredFoods.map((item: any) => {
-          const cartItem = cart.find(
-            (cartItem: any) => cartItem._id === item._id
-          );
-          const quantity = cartItem ? cartItem.quantity : 0;
-          return (
-            <div key={item._id}
-              className=" w-full border-b-2 border-dashed border-gray-300 py-2"
-            >
-              <div className="flex w-full gap-2">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className=" h-27.5 w-27.5 shrink-0 rounded-2xl object-cover "
-                />
-
-                <div className="flex h-27.5 min-w-0 flex-1 flex-col">
-                  <h2
-                    className=" line-clamp-2 text-[18px] font-semibold leading-tight text-gray-900 "
-                  >
-                    {item.name}
-                  </h2>
-                  <p
-                    className="mt-1 line-clamp-2 text-[14px] leading-[1.35] text-gray-500"
-                  >
-                    {item.description}
-                  </p>
-                  <div className="mt-auto flex items-center justify-between ">
-                    {/* Price */}
-                    <p className="text-[16px] font-semibold leading-none text-orange-500">
-                      ${item.price.toFixed(2)}
-                    </p>
-
-                    {/* Quantity Controls */}
-                    {
-                      quantity > 0 ? (
-                        <div className="flex items-center gap-1">
-                          {/* Minus */}
-                          <button
-                            onClick={() => decreaseQty(item._id)}
-                            className=" flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 bg-white p-0 text-[18px] font-semibold leading-none text-gray-600 shadow-sm transition-all duration-150 hover:bg-gray-100 hover:border-gray-300 active:scale-90 active:bg-gray-200 "
-                          >
-                            −
-                          </button>
-
-                          {/* Quantity */}
-                          <span className="flex h-7  items-center justify-between font-semibold leading-none text-black "
-                          >
-                            {quantity}
-                          </span>
-
-                          {/* Plus */}
-                          <button
-                            onClick={() => increaseQty(item)}
-                            className=" flex h-7 w-7 items-center justify-center rounded-lg bg-orange-500 p-0 text-[18px] font-semibold leading-none text-white shadow-sm transition-all duration-150 hover:bg-orange-600 hover:shadow-md active:scale-90 active:bg-orange-700 "
-                          >
-                            +
-                          </button>
-
-                        </div>
-                      ) : (
-                        <div className="flex items-center w-[35%]">
-                          <button
-                            onClick={() => increaseQty(item)}
-                            className=" flex h-7 w-full items-center justify-center rounded-lg bg-orange-500 p-0 text-[15px] font-semibold leading-none text-white shadow-sm transition-all duration-150 hover:bg-orange-600 hover:shadow-md active:scale-90 active:bg-orange-700 "
-                          >
-                            Add
-                          </button>
-                        </div>
-                      )
-                    }
-                  </div>
-
-                </div>
-              </div>
-
+        {filteredFoods.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-orange-50">
+              <UtensilsCrossed
+                size={30}
+                className="text-orange-500"
+              />
             </div>
-          );
-        })}
 
+            <h2 className="text-lg font-semibold text-gray-800">
+              No menu items found
+            </h2>
+
+            <p className="mt-1 max-w-xs text-sm text-gray-500">
+              There are no food items available in this category right now.
+              Please try another category.
+            </p>
+          </div>
+        ) : (
+          filteredFoods.map((item: any) => {
+            const cartItem = cart.find(
+              (cartItem: any) => cartItem._id === item._id
+            );
+            const quantity = cartItem ? cartItem.quantity : 0;
+            return (
+              <div key={item._id}
+                className=" w-full border-b-2 border-dashed border-gray-300 py-2"
+              >
+                <div className="flex w-full gap-2">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className=" h-27.5 w-27.5 shrink-0 rounded-2xl object-cover "
+                  />
+
+                  <div className="flex h-27.5 min-w-0 flex-1 flex-col">
+                    <h2
+                      className=" line-clamp-2 text-[18px] font-semibold leading-tight text-gray-900 "
+                    >
+                      {item.name}
+                    </h2>
+                    <p
+                      className="mt-1 line-clamp-2 text-[14px] leading-[1.35] text-gray-500"
+                    >
+                      {item.description}
+                    </p>
+                    <div className="mt-auto flex items-center justify-between ">
+                      {/* Price */}
+                      <p className="text-[16px] font-semibold leading-none text-orange-500">
+                        ₹{item.price.toFixed(2)}
+                      </p>
+
+                      {/* Quantity Controls */}
+                      {
+                        quantity > 0 ? (
+                          <div className="flex items-center gap-1">
+                            {/* Minus */}
+                            <button
+                              onClick={() => decreaseQty(item._id)}
+                              className=" flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 bg-white p-0 text-[18px] font-semibold leading-none text-gray-600 shadow-sm transition-all duration-150 hover:bg-gray-100 hover:border-gray-300 active:scale-90 active:bg-gray-200 "
+                            >
+                              −
+                            </button>
+
+                            {/* Quantity */}
+                            <span className="flex h-7  items-center justify-between font-semibold leading-none text-black "
+                            >
+                              {quantity}
+                            </span>
+
+                            {/* Plus */}
+                            <button
+                              onClick={() => increaseQty(item)}
+                              className=" flex h-7 w-7 items-center justify-center rounded-lg bg-orange-500 p-0 text-[18px] font-semibold leading-none text-white shadow-sm transition-all duration-150 hover:bg-orange-600 hover:shadow-md active:scale-90 active:bg-orange-700 "
+                            >
+                              +
+                            </button>
+
+                          </div>
+                        ) : (
+                          <div className="flex items-center w-[35%]">
+                            <button
+                              onClick={() => increaseQty(item)}
+                              className=" flex h-7 w-full items-center justify-center rounded-lg bg-orange-500 p-0 text-[15px] font-semibold leading-none text-white shadow-sm transition-all duration-150 hover:bg-orange-600 hover:shadow-md active:scale-90 active:bg-orange-700 "
+                            >
+                              Add
+                            </button>
+                          </div>
+                        )
+                      }
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            );
+          })
+        )}
       </div>
 
       {/* Floating Cart Button */}

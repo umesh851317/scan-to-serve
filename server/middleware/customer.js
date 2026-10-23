@@ -1,17 +1,14 @@
-const Table = require("../models/Table");
 const TableSession = require("../models/TableSession");
 
 async function VarifyCustomer(req, res, next) {
-       const { restaurentId } = req.params;
        const customerDetails = req.cookies.customerInfo // recieve token as cookies....
-       const { customerId, customerName, tableId, tableNumber, restaurantId, sessionId } = customerDetails
        if (!customerDetails) {
-              return res.json({
+              return res.status(401).json({
                      success: false,
-                     message: "Token not provided...",
+                     message: "Customer session not provided",
               });
        }
-
+       const { customerId, customerName, tableId, tableNumber, restaurantId, sessionId } = customerDetails
        if (!customerId, !customerName, !tableId, !tableNumber, !restaurantId, !sessionId) {
               return res.json({
                      success: false,
@@ -19,7 +16,7 @@ async function VarifyCustomer(req, res, next) {
               });
        }
        const isCustomerVerify = await TableSession.findOne({
-              "customerSummary._id": customerDetails.customerId
+              "customerSummary._id": customerId
        });
 
        if (!isCustomerVerify && isCustomerVerify.restaurantId == restaurantId) {

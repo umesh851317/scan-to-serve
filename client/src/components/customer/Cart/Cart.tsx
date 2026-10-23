@@ -15,8 +15,7 @@ const Cart = ({ cartProps }) => {
        );
 
        return (
-              <div className="min-h-full w-full bg-[#f8f9fa] pb-36 top-[21%]">
-
+              <div className="min-h-full w-full bg-[#f8f9fa] pb-36 top-[10.4%]">
                      {/* Cart Items */}
                      <main className="px-3 pt-4">
 

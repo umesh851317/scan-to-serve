@@ -46,9 +46,8 @@ const Menu = () => {
                                           <span>Add menu itme</span>
                                    </button>
                             </div>
-                            {/* <div className=" space-y-4">
-
-                                   <FilterDropdown
+                            <div className=" space-y-4">
+                                   {/* <FilterDropdown
                                           title="Category"
                                           value={selectedCategory}
                                           options={[
@@ -62,7 +61,6 @@ const Menu = () => {
                                           ]}
                                           onChange={setSelectedCategory}
                                    />
-
                                    <FilterDropdown
                                           title="Food Type"
                                           value={selectedType}
@@ -73,7 +71,6 @@ const Menu = () => {
                                           ]}
                                           onChange={setSelectedType}
                                    />
-
                                    <FilterDropdown
                                           title="Price"
                                           value={selectedPrice}
@@ -85,9 +82,8 @@ const Menu = () => {
                                                  "Above ₹500"
                                           ]}
                                           onChange={setSelectedPrice}
-                                   />
-
-                            </div> */}
+                                   /> */}
+                            </div>
                      </aside>
 
 

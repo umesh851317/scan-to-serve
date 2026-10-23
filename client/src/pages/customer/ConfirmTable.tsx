@@ -5,8 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { usePopup } from '../../context/Popup';
 import CustomerPopUp from '../../components/popUpMsg/customerPopUp';
+import { Loader } from 'lucide-react';
 const ConfirmTable = () => {
-       const navigate = useNavigate()
+       const navigate = useNavigate();
+       const [loading, setLoading] = useState(false)
        const { showPopUp } = usePopup();
        const { tableId } = useParams();
        const { setPopup, setShowPopUp } = usePopup();
@@ -14,6 +16,7 @@ const ConfirmTable = () => {
        const isAlreadyJoined = document.cookie.includes("isAlredyJoinTable=true");
        const fetchTableStatus = async () => {
               try {
+                     setLoading(true);
                      const { data } = await axios.get(`${import.meta.env.VITE_API}/verifyTable/${tableId}`)
                      setTableData(data.result);
                      if (isAlreadyJoined) {
@@ -21,6 +24,8 @@ const ConfirmTable = () => {
                      }
               } catch (err) {
                      console.log(err);
+              } finally {
+                     setLoading(false)
               }
        }
        const handleSave = async (formData: any) => {
@@ -59,7 +64,13 @@ const ConfirmTable = () => {
        useEffect(() => {
               fetchTableStatus();
        }, [])
-
+       if (loading) {
+              return (
+                     <div className=" h-full flex items-center justify-center">
+                            <Loader className="animate-spin"></Loader>
+                     </div>
+              );
+       }
        if (!tableData?.isOpen) {
               return (
                      <main className="min-h-full bg-[#111]  py-4 text-white flex flex-col gap-3 items-center justify-center">

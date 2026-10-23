@@ -8,14 +8,17 @@ export function CustomerProvider({ children }) {
        const [loading, setLoading] = useState(true);
        const [customerDetails, setCustomerDetails] = useState();
        const [cart, setCart] = useState([])
-
+       const [sessionActive,setSessionActive] = useState(true)
        const verifyCustomer = async () => {
               try {
+                     setLoading(true);
                      const { data } = await axios.get(`${import.meta.env.VITE_API}/customer/fetchCustomerData/verifyCustomer`, {
                             withCredentials: true,
                      })                     
                      if (data.success) {
                             setCustomerDetails(data.response)  // customer and table details
+                     } else {
+                            setSessionActive(data.isSessionActive)
                      }
               } catch (error) {
                      console.log(error);
@@ -77,7 +80,7 @@ export function CustomerProvider({ children }) {
        return (
               <CustomerContext.Provider
                      value={{
-                            verifyCustomer,
+                            verifyCustomer,sessionActive,
                             customerDetails,
                             loading,
                             cart, setCart,

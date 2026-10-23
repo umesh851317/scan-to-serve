@@ -6,8 +6,8 @@ import DeleteTable from "../../Ui/table/deleteTable";
 import TableDataForm from "../../Ui/table/tableDataForm";
 import ViewTable from "../../Ui/table/viewTable";
 
-const Table = () => {
-       const [tables, setTables] = useState([])
+const Table = ({ tableProps }) => {
+       const { tables,setTables } = tableProps
        const [query, setQuery] = useState("")
        const [selectCategory, setSelectCategory] = useState("All")
        const [deleteTableId, setDeleteTableId] = useState(null)
@@ -106,7 +106,7 @@ const Table = () => {
                      <div className="flex-1 overflow-y-auto p-4 pb-6">
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                                    {filterTable.length > 0 ? (
-                                          filterTable.map((table) => (
+                                          filterTable.map((table:any) => (
                                                  <TableCard key={table._id}
                                                         tableData={{
                                                                table, setTables, setDeleteTableId, setEditTable,
